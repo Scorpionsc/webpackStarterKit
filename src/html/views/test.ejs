@@ -1,0 +1,24 @@
+<%
+var data = {
+    lang: "en",
+    title: "index",
+    styles: [],
+    scripts: [
+        "./js/main.js"
+    ]
+};
+
+%>
+
+<!DOCTYPE html>
+<html lang="<%= data.lang %>">
+
+<%- include ../patterns/common/head.ejs %>
+
+<body>
+
+<%- include ../patterns/common/scripts.ejs %>
+
+</body>
+
+</html>
