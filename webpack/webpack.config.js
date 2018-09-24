@@ -1,8 +1,7 @@
 const path = require('path');
-const generateHtmlPlugins = require('./plugins/html');
-const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
+const modules = require('./modules/modules');
+const plugins = require('./plugins/plugins');
 
-const htmlPlugins = generateHtmlPlugins('../../src/html/views');
 
 module.exports = {
     entry: {
@@ -12,13 +11,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist/js')
     },
-    plugins: [
-
-    ].concat(htmlPlugins, new HtmlBeautifyPlugin({
-        config: {
-            html: {
-                "max_preserve_newlines": 1
-            }
-        }
-    })),
+    module: modules,
+    plugins: plugins,
 };
