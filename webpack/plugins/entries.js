@@ -4,38 +4,38 @@ const path = require('path');
 function getAllEntries(templateDir) {
 
     const entriesPath = [
-        '../../src/js/entry/',
-        '../../src/scss/entry/'
+        'src/js/entry/',
+        'src/ts/entry/',
+        'src/scss/entry/'
     ];
 
-    const result = {};
+    const entries = {};
 
     entriesPath.forEach(pathItem => {
 
-        fs.readdirSync(path.resolve(__dirname, pathItem ), (err, items) => {
-
-            items.forEach( file => {
+        try {
+            fs.readdirSync(path.resolve(__dirname, `../../${pathItem}`)).map((file) => {
 
                 const fileName = file.split('.')[0];
 
+                if (!entries[fileName]) entries[fileName] = [];
 
-                if( !result[fileName] ) result[fileName] = [];
+                entries[fileName].push(`./${pathItem}${file}`)
 
-                result[fileName].push(file)
+            });
+        } catch (err) {
+            if (err.code === 'ENOENT') {
+                console.log('File not found!');
+            } else {
+                throw err;
+            }
+        }
 
 
-            } );
-
-            console.log(result);
-
-
-        });
 
     });
 
-    console.log('-----------------');
-    console.log(result);
-
+    return entries;
 
 }
 

@@ -1,11 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const fs = require('fs');
 const path = require('path');
+const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
 
+function generateHtml(templateDir, dirName) {
 
-function generateHtmlPlugins(templateDir) {
-
-    const templateFiles = fs.readdirSync(path.resolve(__dirname, `${templateDir}`));
+    const templateFiles = fs.readdirSync(path.resolve(dirName, `${templateDir}`));
 
     return templateFiles.map(item => {
         const parts = item.split('.');
@@ -15,7 +15,7 @@ function generateHtmlPlugins(templateDir) {
         return new HtmlWebpackPlugin({
             filename: `../${name}.html`,
             beautify: true,
-            template: `!!ejs-webpack-loader!${path.resolve(__dirname, `${templateDir}/${name}.${extension}`)}`,
+            template: `!!ejs-webpack-loader!${path.resolve(dirName, `${templateDir}/${name}.${extension}`)}`,
             inject: false,
         });
 
@@ -23,7 +23,20 @@ function generateHtmlPlugins(templateDir) {
 
 }
 
+module.exports = (dirName) => {
 
-module.exports = generateHtmlPlugins;
+    const templateDir = '../src/html/views';
+
+    return generateHtml(templateDir, dirName).concat(
+            new HtmlBeautifyPlugin({
+                config: {
+                    html: {
+                        "max_preserve_newlines": 1
+                    }
+                }
+            })
+        );
+
+};
 
 
