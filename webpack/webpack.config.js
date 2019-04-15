@@ -20,6 +20,12 @@ module.exports = (env, argv) => {
         },
         module: getModules(isDev),
         plugins: getPlugins(isDev, distPath, dirName),
+        devServer: {
+            contentBase: path.join(__dirname, '../dist'),
+            compress: true,
+            port: 9000,
+            writeToDisk: true,
+        },
     };
 
 };
